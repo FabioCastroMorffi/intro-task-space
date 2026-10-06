@@ -95,4 +95,6 @@ Given both require a change in state, I'd make the outer if condition for the ch
 
 - Give examples of when an edge sensitive pushbutton or a level sensitive pushbutton would be required.
 
-I think whenever we don't want to check for a continuos signal. For example, it becomes useful when counting, we do not want to increase the value of a variable keeping track of discrete amounts whenever the user input stays longer on a high signal. As for the satellite, I can imagine 
+I think whenever we don't want to check for a continuos signal. For example, it becomes useful when counting, we do not want to increase the value of a variable keeping track of discrete amounts whenever the user input stays longer on a high signal. As for satellites, I can imagine many systems depend on these conditions. For instance, in motor control, you'd want the condition to be triggered only once after the change.
+
+
