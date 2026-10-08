@@ -8,9 +8,10 @@ uint8_t slaveAddress = 0b0001000;
 const int button = 10;
 const int potPin = 3;
 
-bool prevState = LOW;
-uint8_t b1, b2;
-// NOTE: First and second byte to be declared;
+bool prevState = 0;
+bool lastingState = 0;
+uint16_t potValue = 0;
+
 void setup()
 {
   //DO NOT MODIFY
@@ -26,19 +27,24 @@ void setup()
 void loop()
 {
   //Write your code here
-  uint16_t msg = analogRead(potPin);
+  potValue = analogRead(potPin);
   bool currState = digitalRead(button);
   if (currState && !prevState) {
-    msg |= 0x8000;
+    lastingState = true;
   }
   prevState = currState;
 
-  Wire.beginTransmission()
   //Keep for smooth simulation
   delay(10);
 }
 
 //Write any additional functions here
 void requestEvent() {
-  ;
+  uint16_t msg = potValue;
+  if (lastingState) {
+    msg |= 0x8000;
+    lastingState = false;
+  }
+  Wire.write(msg >> 8);
+  Wire.write(msg & 0xFF);
 }
