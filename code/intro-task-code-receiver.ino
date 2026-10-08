@@ -24,12 +24,18 @@ void setup()
   pinMode(toleranceLED, OUTPUT);
   
   //Write your code here
+  Wire.begin();
 }
 
 void loop()
 {
   //Write your code here
+  Wire.requestFrom(slaveAddress,2);
   
+  while (Wire.available()) {
+    int c = Wire.read();
+    Serial.println(c);
+  }
   //Keep this for smooth simulation
   delay(50);
 }

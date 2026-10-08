@@ -80,9 +80,9 @@ while (True) {
     pinMode(buttonPin, INPUT);
     int prevState = 0;
     while (True) {
-        pinState = digitalRead(buttonPin);
+        bool pinState = digitalRead(buttonPin);
         // check for change in state and for state to be 1
-        if (pinState == 1 && pinState != prevState) {
+        if (pinState && pinState != prevState) {
             ;
         }
         prevState = pinState;
