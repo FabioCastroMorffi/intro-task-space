@@ -98,3 +98,18 @@ Given both require a change in state, I'd make the outer if condition for the ch
 I think whenever we don't want to check for a continuos signal. For example, it becomes useful when counting, we do not want to increase the value of a variable keeping track of discrete amounts whenever the user input stays longer on a high signal. As for satellites, I can imagine many systems depend on these conditions. For instance, in motor control, you'd want the condition to be triggered only once after the change.
 
 
+## Practical Section
+
+- Design a UML State Diagram that describes the sequence provided above. (Hint: You should have 4 states)
+
+- From the Wire.h documentation, what functions would be useful in this context?
+
+The way I understand this problem, the transmitter will only send the data when requested for the msg payload so begin(), onRequest(), requestFrom(), write() and read() are essential in order to setup the connection and access the data stream. Then, we can also use available() to read until the data stream is empty.
+
+- Develop the code to achieve the described functionality.
+
+The two files will be appended in the email.
+
+- The instructions specifically ask for Rising Edge readings from the button, i.e. record only when the button is initially pressed. Why do you think that is? If the button were to be level sensitive for HIGH values, i.e. record when the button is held, how would that affect the rest of the circuit?
+
+The different states at which the receiver changes to happen only in discrete amounts. If we were to record the button to be held, it would jump states increasing the state counter (correct) multiple times until reaching the last state.

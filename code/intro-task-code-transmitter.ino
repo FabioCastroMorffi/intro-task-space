@@ -41,6 +41,7 @@ void loop()
 //Write any additional functions here
 void requestEvent() {
   uint16_t msg = potValue;
+  // NOTE: We need to retain the value that the button was pressed for every delay of 50ms
   if (lastingState) {
     msg |= 0x8000;
     lastingState = false;
