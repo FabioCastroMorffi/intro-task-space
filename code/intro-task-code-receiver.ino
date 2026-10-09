@@ -25,7 +25,7 @@ void setup()
   pinMode(correctLED2, OUTPUT);
   pinMode(correctLED3, OUTPUT);
   pinMode(toleranceLED, OUTPUT);
-  
+
   //Write your code here
   Wire.begin();
 }
@@ -34,7 +34,7 @@ void loop()
 {
   //Write your code here
   Wire.requestFrom(slaveAddress,2);
-  
+
   while (Wire.available() >= 2) {
     b1 = Wire.read();
     b2 = Wire.read();
@@ -43,8 +43,10 @@ void loop()
   uint16_t potValue = b1b2 & 0x3FF;
   uint16_t region = tolerance + potValue;
   bool buttonState = b1b2 >> 15;
-  
-  if (correct != 3 && region >= keys[correct] && potValue <= keys[correct]) {
+
+  bool inRegion = region >= keys[correct] && potValue <= keys[correct];
+
+  if (correct != 3 && inRegion) {
     digitalWrite(toleranceLED, HIGH);
   }
   else {
@@ -52,19 +54,30 @@ void loop()
   }
 
   if (buttonState) {
-    if (correct == 3) {
-      digitalWrite(ledArr[2], LOW);
-      correct--;
-    }
-    else if (region >= keys[correct] && potValue <= keys[correct]) {
-      digitalWrite(ledArr[correct], HIGH);
-      correct++;
-    }
-    else {
-      if (correct) {
-        digitalWrite(ledArr[correct-1], LOW);
+    switch (correct) {
+      case 0:  // ALL LOW
+        if (inRegion) {
+          digitalWrite(ledArr[correct], HIGH);
+          correct++;
+        }
+        break;
+
+      case 1:  // LED1 HIGH
+      case 2:  // LED1LED2 HIGH
+        if (inRegion) {
+          digitalWrite(ledArr[correct], HIGH);
+          correct++;
+        }
+        else {
+          digitalWrite(ledArr[correct-1], LOW);
+          correct--;
+        }
+        break;
+
+      case 3:  // ALL HIGH
+        digitalWrite(ledArr[2], LOW);
         correct--;
-      }
+        break;
     }
   }
   //Keep this for smooth simulation
